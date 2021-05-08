@@ -1,17 +1,24 @@
 (function() {
   let DB;
+  let clientID;
 
   const nameInput = document.querySelector('#name');
   const emailInput = document.querySelector('#email');
   const phoneInput = document.querySelector('#phone');
   const companyInput = document.querySelector('#company');
 
+  const form = document.querySelector('#form');
+
   document.addEventListener('DOMContentLoaded', () => {
     conectDB();
 
+    // update the form
+    form.addEventListener('submit', clientUpdate);
+
+
     // check for the url id
     const urlParams = new URLSearchParams(window.location.search);
-    const clientID = urlParams.get('id');
+    clientID = urlParams.get('id');
 
     if(clientID) {
       setTimeout(() => {
@@ -19,6 +26,43 @@
       }, 100);
     }
   });
+
+
+  function clientUpdate(e) {
+    e.preventDefault();
+
+    if(nameInput.value === '' || emailInput.value === '' || phoneInput.value === '' || companyInput.value === '') {
+      alertMessage('All Fields are required', 'error');
+
+      return;
+    }
+    // update client
+    const clientUpdate = {
+      name: nameInput.value,
+      email: emailInput.value,
+      company: companyInput.value,
+      phone: phoneInput.value,
+      id: Number(clientID)
+    };
+
+    const transaction = DB.transaction(['crm'], 'readwrite');
+    const objectStore = transaction.objectStore('crm');
+
+    objectStore.put(clientUpdate);
+
+    transaction.oncomplete = function() {
+      alertMessage('Saved 🔐');
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 3000);
+    };
+
+    transaction.onerror = function() {
+      alertMessage('Theres an error. Check your input', 'error')
+    }
+
+  }
 
   function getClient(id) {
     const transaction = DB.transaction(['crm'], 'readwrite');
