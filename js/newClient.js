@@ -1,6 +1,6 @@
 (function(){
   let DB;
-  const form = document.querySelector('#form')
+  const form = document.querySelector('#form');
 
   document.addEventListener('DOMContentLoaded', () => {
     conectDB();
@@ -27,21 +27,21 @@
       }
 
       // create an object with the info
-      const cliente = {
+      const client = {
         name,
         email,
         phone,
         company,
         id: Date.now()
       }
-      createNewClient(cliente)
+      createNewClient(client);
 
     }
 
     function createNewClient(client) {
       const transaction = DB.transaction(['crm'], 'readwrite');
-
       const objectStore = transaction.objectStore('crm');
+        // console.log(objectStore);
 
       objectStore.add(client);
 
@@ -58,7 +58,5 @@
       }
 
     }
-
-
   
 })();

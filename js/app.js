@@ -2,6 +2,8 @@
 
   let DB;
 
+  const clientList = document.querySelector('#client-list');
+
   document.addEventListener('DOMContentLoaded', () => {
     createDB();
 
@@ -9,12 +11,37 @@
       getClients();
     }
 
-
+    clientList.addEventListener('click', deleteEntry);
   });
+
+  function deleteEntry(e) {
+    if(e.target.classList.contains('delete')) {
+      const deleteID = Number(e.target.dataset.client);
+
+      const confirmation = confirm('Are you sure you want to delele it?');
+
+      if(confirmation) {
+        const transaction = DB.transaction(['crm'], 'readwrite');
+        const objectStore = transaction.objectStore('crm');
+
+        objectStore.delete(deleteID);
+
+        transaction.oncomplete = function() {
+          console.log('eliminado...')
+
+          e.target.parentElement.parentElement.remove();
+        }
+
+        transaction.onerror = function() {
+          console.log('errror')
+        }
+      }
+    }
+  }
 
   // creates de DB for INdexDB
   function createDB() {
-    const createDB = window.indexedDB.open('crm', 1);
+    const createDB = window.indexedDB.open('crm', 3);
 
     createDB.onerror = function() {
       console.log('Error')
@@ -58,7 +85,7 @@
         if(cursor) {
           const { name, company, email, phone, id } = cursor.value;
 
-          const clientList = document.querySelector('#client-list');
+          
           clientList.innerHTML += ` 
               <tr>
                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -73,7 +100,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5">
                     <a href="edit.html?id=${id}" class="text-teal-600 hover:text-teal-900 mr-5">Edit</a>
-                    <a href="#" data-client="${id}" class="text-red-600 hover:text-red-900">Delete</a>
+                    <a href="#" data-client="${id}" class="text-red-600 hover:text-red-900 delete">Delete</a>
                 </td>
             </tr>
   `;
