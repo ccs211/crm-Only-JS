@@ -5,12 +5,11 @@
   document.addEventListener('DOMContentLoaded', () => {
     conectDB();
 
-    form.addEventListener('submit', validates)
+    form.addEventListener('submit', validates);
 
   });
 
   
-
   function validates(e) {
     e.preventDefault();
 
@@ -34,6 +33,7 @@
         company,
         id: Date.now()
       }
+      console.log(client)
       createNewClient(client);
 
     }
@@ -53,10 +53,11 @@
         alertMessage('Client Added 👍');
 
         setTimeout(() => {
-          window.location.href = 'index.html'
-        }, 3000)
+          window.location.href = 'index.html';
+        }, 3000);
       }
 
     }
+
   
 })();

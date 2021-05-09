@@ -41,7 +41,7 @@
 
   // creates de DB for INdexDB
   function createDB() {
-    const createDB = window.indexedDB.open('crm', 3);
+    const createDB = window.indexedDB.open('crm', 4);
 
     createDB.onerror = function() {
       console.log('Error')
@@ -68,7 +68,7 @@
 
 
   function getClients() {
-    const open = window.indexedDB.open('crm', 1);
+    const open = window.indexedDB.open('crm', 4);
 
     open.onerror = function() {
       console.log('error');
