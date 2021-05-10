@@ -7,7 +7,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     createDB();
 
-    if(window.indexedDB.open('crm', 1)) {
+    if(window.indexedDB.open('crm', 4)) {
       getClients();
     }
 

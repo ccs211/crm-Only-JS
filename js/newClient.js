@@ -3,9 +3,8 @@
   const form = document.querySelector('#form');
 
   document.addEventListener('DOMContentLoaded', () => {
-    conectDB();
-
     form.addEventListener('submit', validates);
+    conectDB();
 
   });
 
@@ -45,18 +44,17 @@
 
       objectStore.add(client);
 
-      transaction.onerror = function() {
-        alertMessage('Invalid Input 🤨', 'error')
-      }
-
       transaction.oncomplete = function() {
         alertMessage('Client Added 👍');
+        
+        transaction.onerror = function() {
+          alertMessage('Invalid Input 🤨', 'error')
+        }
 
         setTimeout(() => {
           window.location.href = 'index.html';
         }, 3000);
-      }
-
+      };
     }
 
   

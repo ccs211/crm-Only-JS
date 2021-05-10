@@ -1,5 +1,5 @@
 function conectDB() {
-  const openConection = window.indexedDB.open('crm', 4);
+  let openConection = window.indexedDB.open('crm', 4);
 
   openConection.onerror = function() {
     console.log('Error')
@@ -7,7 +7,7 @@ function conectDB() {
 
   openConection.onsuccess = function() {
     DB = openConection.result;
-  }
+  };
 }
 
 function alertMessage(msg, type){
